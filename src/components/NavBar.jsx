@@ -4,6 +4,7 @@ import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import LiveHelpOutlinedIcon from "@mui/icons-material/LiveHelpOutlined";
+import { useAuth } from "../hooks/useAuth";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,7 +27,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function NavBar() {
+  const { logout } = useAuth();
   const classes = useStyles();
+
+  const signOut = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -48,6 +59,11 @@ function NavBar() {
               Who are we
             </Button>
           </Link> */}
+          <Link to="/" className={classes.navLink}>
+            <Button color="inherit" onClick={signOut}>
+              Logout
+            </Button>
+          </Link>
           <Link to="/support" className={classes.navLink}>
             <Button color="inherit" className={classes.menuButton}>
               Support

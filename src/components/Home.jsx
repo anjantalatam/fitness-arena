@@ -1,5 +1,12 @@
 import React from "react";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Home() {
-  return <div style={{ marginTop: "100" }}>Home</div>;
+  const { user } = useAuth();
+
+  return (
+    <div style={{ marginTop: "100" }}>
+      <pre>{JSON.stringify(user, null, 2)}</pre>
+    </div>
+  );
 }

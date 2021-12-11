@@ -12,6 +12,18 @@ export default function Login() {
   const { loginWithGoogle } = useAuth();
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState(null);
+
+  const handleLogin = async () => {
+    try {
+      await loginWithGoogle();
+      setMessage("Welcome to Fitness Arena");
+      setSeverity("success");
+    } catch (error) {
+      setMessage(error);
+      setSeverity("error");
+    }
+  };
+
   return (
     <div
       style={{
@@ -30,20 +42,7 @@ export default function Login() {
           <CardMedia>Select your email in the Pop Up </CardMedia>
         </CardContent>
         <CardActions>
-          <Button
-            size="small"
-            variant="contained"
-            onClick={async () => {
-              try {
-                await loginWithGoogle();
-                setMessage("Welcome to Fitness Arena");
-                setSeverity("success");
-              } catch (error) {
-                setMessage(error);
-                setSeverity("error");
-              }
-            }}
-          >
+          <Button size="small" variant="contained" onClick={handleLogin}>
             Login With Google
           </Button>
         </CardActions>

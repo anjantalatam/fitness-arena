@@ -7,12 +7,31 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useAuth } from "../hooks/useAuth";
 import NotificationBar from "./common/NotificationBar";
+import { createUser } from "../firebase/helper-firestore";
+import { startCase, get } from "lodash";
 
 export default function Register() {
   const { loginWithGoogle } = useAuth();
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState(null);
 
+  const handleRegister = async () => {
+    try {
+      const response = await loginWithGoogle();
+      console.log(response);
+      const data = {
+        name: startCase(get(response, "user.displayName").toLowerCase()),
+        email: get(response, "user.email"),
+        isEmailVerified: get(response, "user.emailVerified"),
+      };
+      await createUser(response?.user?.uid, data);
+      setMessage("Welcome to Fitness Arena");
+      setSeverity("success");
+    } catch (error) {
+      setMessage(error);
+      setSeverity("error");
+    }
+  };
   return (
     <div
       style={{
@@ -31,20 +50,7 @@ export default function Register() {
           <CardMedia>Select your email in the Pop Up </CardMedia>
         </CardContent>
         <CardActions>
-          <Button
-            size="small"
-            variant="contained"
-            onClick={async () => {
-              try {
-                await loginWithGoogle();
-                setMessage("Welcome to Fitness Arena");
-                setSeverity("success");
-              } catch (error) {
-                setMessage(error);
-                setSeverity("error");
-              }
-            }}
-          >
+          <Button size="small" variant="contained" onClick={handleRegister}>
             Register With Google
           </Button>
         </CardActions>

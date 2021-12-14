@@ -9,9 +9,13 @@ import Login from "./Login";
 import Register from "./Register";
 import NotFound from "./NotFound";
 import { useAuth } from "../hooks/useAuth";
+import PrivateRoute from "./PrivateRoute";
+import Arena from "./Arena";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   const { user } = useAuth();
+
   return (
     <div className="App">
       <CssBaseline />
@@ -19,11 +23,15 @@ function App() {
       {`${user?.email}`}
       <div className="body">
         <Routes>
-          <Route path="/login" exact element={<Login />}></Route>
-          <Route path="/register" exact element={<Register />}></Route>
-          <Route path="/support" exact element={<Support />}></Route>
-          {/* <Route path="/demo" exact  element={Demo} /> */}
-          <Route exact path="/" element={<Home />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/login" exact element={<Login />} />
+            <Route path="/register" exact element={<Register />} />
+          </Route>
+          <Route element={<ProtectedRoute />}>
+            <Route path="/support" exact element={<Support />} />
+          </Route>
+
+          <Route exact path="/" element={user ? <Arena /> : <Home />} />
           <Route path="/not-found" element={<NotFound />} />
           <Route path="*" element={<Navigate to="/not-found" />} />
         </Routes>

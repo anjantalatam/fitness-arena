@@ -1,35 +1,34 @@
-import { useState } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
+import { Button } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { useAuth } from "../hooks/useAuth";
-import NotificationBar from "./common/NotificationBar";
 import { createUser } from "../firebase/helper-firestore";
 import { startCase, get } from "lodash";
+import { useNavigate } from "react-router-dom";
+import useSnackbar from "../hooks/useSnackbar";
 
 export default function Register() {
   const { loginWithGoogle } = useAuth();
-  const [message, setMessage] = useState("");
-  const [severity, setSeverity] = useState(null);
+
+  const enqueueSnackbar = useSnackbar();
+  const navigate = useNavigate();
 
   const handleRegister = async () => {
     try {
       const response = await loginWithGoogle();
-      console.log(response);
       const data = {
         name: startCase(get(response, "user.displayName").toLowerCase()),
         email: get(response, "user.email"),
         isEmailVerified: get(response, "user.emailVerified"),
       };
       await createUser(response?.user?.uid, data);
-      setMessage("Welcome to Fitness Arena");
-      setSeverity("success");
+      enqueueSnackbar("Welcome to Fitness Arena", "success");
+      navigate("/");
     } catch (error) {
-      setMessage(error);
-      setSeverity("error");
+      enqueueSnackbar(error, "error");
     }
   };
   return (
@@ -55,7 +54,6 @@ export default function Register() {
           </Button>
         </CardActions>
       </Card>
-      <NotificationBar message={message} severity={severity} />
     </div>
   );
 }

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -6,21 +5,18 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useAuth } from "../hooks/useAuth";
-import NotificationBar from "./common/NotificationBar";
+import useSnackbar from "../hooks/useSnackbar";
 
 export default function Login() {
   const { loginWithGoogle } = useAuth();
-  const [message, setMessage] = useState("");
-  const [severity, setSeverity] = useState(null);
+  const enqueueMessage = useSnackbar();
 
   const handleLogin = async () => {
     try {
       await loginWithGoogle();
-      setMessage("Welcome to Fitness Arena");
-      setSeverity("success");
+      enqueueMessage("Welcome back to Fitness Arena", "success");
     } catch (error) {
-      setMessage(error);
-      setSeverity("error");
+      enqueueMessage(error, "error");
     }
   };
 
@@ -47,7 +43,6 @@ export default function Login() {
           </Button>
         </CardActions>
       </Card>
-      <NotificationBar message={message} severity={severity} />
     </div>
   );
 }

@@ -5,6 +5,8 @@ import { makeStyles } from "@mui/styles";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import LiveHelpOutlinedIcon from "@mui/icons-material/LiveHelpOutlined";
 import { useAuth } from "../hooks/useAuth";
+import useSnackbar from "../hooks/useSnackbar";
+import NavLink from "./NavLink";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,11 +32,16 @@ function NavBar() {
   const { logout } = useAuth();
   const classes = useStyles();
 
-  const signOut = async () => {
+  const { user } = useAuth();
+  const enqueueMessage = useSnackbar();
+
+  const signOut = async (e) => {
     try {
+      e.preventDefault();
       await logout();
+      enqueueMessage("Loged Out", "success");
     } catch (error) {
-      console.log(error);
+      enqueueMessage(error, "error");
     }
   };
 
@@ -48,28 +55,17 @@ function NavBar() {
               <Typography variant="h5">Fitness Arena</Typography>
             </Button>
           </Link>
-          <Link to="/register" className={classes.navLink}>
-            <Button color="inherit"> Register</Button>
-          </Link>
-          <Link to="/login" className={classes.navLink}>
-            <Button color="inherit">Login</Button>
-          </Link>
-          {/* <Link className={classes.navLink}>
-            <Button color='inherit' className={classes.menuButton}>
-              Who are we
-            </Button>
-          </Link> */}
-          <Link to="/" className={classes.navLink}>
-            <Button color="inherit" onClick={signOut}>
-              Logout
-            </Button>
-          </Link>
-          <Link to="/support" className={classes.navLink}>
-            <Button color="inherit" className={classes.menuButton}>
-              Support
-              <LiveHelpOutlinedIcon className={classes.headerHelpIcon} />
-            </Button>
-          </Link>
+
+          {!user && <NavLink to="/register" name="Register" />}
+          {!user && <NavLink to="/login" name="Login" />}
+          {user && (
+            <NavLink
+              to="/support"
+              name="Support"
+              icon={<LiveHelpOutlinedIcon className={classes.headerHelpIcon} />}
+            />
+          )}
+          {user && <NavLink to="/logout" name="Logout" onClick={signOut} />}
         </Toolbar>
       </AppBar>
     </div>

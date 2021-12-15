@@ -27,11 +27,13 @@ function App() {
             <Route path="/login" exact element={<Login />} />
             <Route path="/register" exact element={<Register />} />
           </Route>
+
           <Route element={<ProtectedRoute />}>
             <Route path="/support" exact element={<Support />} />
           </Route>
 
           <Route exact path="/" element={user ? <Arena /> : <Home />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/not-found" element={<NotFound />} />
           <Route path="*" element={<Navigate to="/not-found" />} />
         </Routes>

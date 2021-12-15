@@ -28,7 +28,7 @@ export default function Register() {
       enqueueSnackbar("Welcome to Fitness Arena", "success");
       navigate("/");
     } catch (error) {
-      enqueueSnackbar(error, "error");
+      enqueueSnackbar(error);
     }
   };
   return (

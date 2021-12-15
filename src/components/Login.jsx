@@ -16,7 +16,7 @@ export default function Login() {
       await loginWithGoogle();
       enqueueMessage("Welcome back to Fitness Arena", "success");
     } catch (error) {
-      enqueueMessage(error, "error");
+      enqueueMessage(error);
     }
   };
 

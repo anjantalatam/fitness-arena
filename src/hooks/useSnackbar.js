@@ -5,7 +5,7 @@ export default function useSnackbar() {
   const { enqueueSnackbar } = useSnackbarNotistack();
 
   const enqueueMessage = useCallback(
-    (message, variant = "info", action) => {
+    (message, variant = "error", action) => {
       let finalMessage = "";
 
       if (message) {

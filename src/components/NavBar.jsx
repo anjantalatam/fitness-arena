@@ -41,7 +41,7 @@ function NavBar() {
       await logout();
       enqueueMessage("Loged Out", "success");
     } catch (error) {
-      enqueueMessage(error, "error");
+      enqueueMessage(error);
     }
   };
 

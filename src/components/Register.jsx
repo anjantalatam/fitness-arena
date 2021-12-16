@@ -19,13 +19,16 @@ export default function Register() {
   const handleRegister = async () => {
     try {
       const response = await loginWithGoogle();
+      const username = startCase(
+        get(response, "user.displayName").toLowerCase()
+      );
       const data = {
-        name: startCase(get(response, "user.displayName").toLowerCase()),
+        name: username,
         email: get(response, "user.email"),
         isEmailVerified: get(response, "user.emailVerified"),
       };
       await createUser(response?.user?.uid, data);
-      enqueueSnackbar("Welcome to Fitness Arena", "success");
+      enqueueSnackbar(`Hi ${username}, Welcome to Fitness Arena`, "success");
       navigate("/");
     } catch (error) {
       enqueueSnackbar(error);

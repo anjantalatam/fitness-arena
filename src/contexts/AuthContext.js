@@ -30,6 +30,13 @@ export default function AuthContextProvider({ children }) {
     return signOut(auth);
   }
 
-  const value = { user, loginWithGoogle, logout, uid: user?.uid };
+  const value = {
+    user,
+    loginWithGoogle,
+    logout,
+    uid: user?.uid,
+    // takecare when signin with email and password
+    username: user?.displayName,
+  };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

@@ -3,10 +3,14 @@ import { Link } from "react-router-dom";
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
-import LiveHelpOutlinedIcon from "@mui/icons-material/LiveHelpOutlined";
 import { useAuth } from "../hooks/useAuth";
 import useSnackbar from "../hooks/useSnackbar";
 import NavLink from "./NavLink";
+import LiveHelpOutlinedIcon from "@mui/icons-material/LiveHelpOutlined";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LogoutIcon from "@mui/icons-material/Logout";
+import LoginIcon from "@mui/icons-material/Login";
+import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#2c387e",
   },
   headerHelpIcon: {
-    marginLeft: "4px",
+    // marginLeft: "0.3rem",
   },
   navLink: {
     textDecoration: "none",
@@ -50,14 +54,37 @@ function NavBar() {
       <AppBar position="static">
         <Toolbar className={classes.toolBar}>
           <Link to="/" className={`${classes.navLink} ${classes.navLogo}`}>
-            <Button color="inherit">
-              <FitnessCenterIcon /> &nbsp;
-              <Typography variant="h5">Fitness Arena</Typography>
+            <Button
+              variant="outlined"
+              color="inherit"
+              startIcon={<FitnessCenterIcon />}
+            >
+              <Typography>Fitness Arena</Typography>
             </Button>
           </Link>
 
-          {!user && <NavLink to="/register" name="Register" />}
-          {!user && <NavLink to="/login" name="Login" />}
+          {!user && (
+            <NavLink
+              to="/register"
+              name="Register"
+              icon={<PersonAddAltIcon className={classes.headerHelpIcon} />}
+            />
+          )}
+          {!user && (
+            <NavLink
+              to="/login"
+              name="Login"
+              icon={<LoginIcon className={classes.headerHelpIcon} />}
+            />
+          )}
+          {user && (
+            <NavLink
+              to="/arena"
+              name="Arena"
+              icon={<AccountCircleIcon className={classes.headerHelpIcon} />}
+            />
+          )}
+
           {user && (
             <NavLink
               to="/support"
@@ -65,7 +92,14 @@ function NavBar() {
               icon={<LiveHelpOutlinedIcon className={classes.headerHelpIcon} />}
             />
           )}
-          {user && <NavLink to="/logout" name="Logout" onClick={signOut} />}
+          {user && (
+            <NavLink
+              to="/logout"
+              name="Logout"
+              onClick={signOut}
+              icon={<LogoutIcon className={classes.headerHelpIcon} />}
+            />
+          )}
         </Toolbar>
       </AppBar>
     </div>

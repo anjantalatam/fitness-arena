@@ -47,7 +47,7 @@ export default function Arena() {
       } else {
         setDatedData(defaultData);
       }
-      console.log("object");
+      // console.log("object");
     };
 
     getDatedData();

@@ -6,15 +6,23 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useAuth } from "../hooks/useAuth";
 import useSnackbar from "../hooks/useSnackbar";
+import { get, startCase } from "lodash";
 
 export default function Login() {
-  const { loginWithGoogle } = useAuth();
+  const { loginWithGoogle, username } = useAuth();
   const enqueueMessage = useSnackbar();
+  console.log(username);
 
   const handleLogin = async () => {
     try {
-      await loginWithGoogle();
-      enqueueMessage("Welcome back to Fitness Arena", "success");
+      const response = await loginWithGoogle();
+      const username = startCase(
+        get(response, "user.displayName").toLowerCase()
+      );
+      enqueueMessage(
+        `Hi ${username}, Welcome back to Fitness Arena`,
+        "success"
+      );
     } catch (error) {
       enqueueMessage(error);
     }

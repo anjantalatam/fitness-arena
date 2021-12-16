@@ -6,5 +6,5 @@ export default function PrivateRoute() {
   const { user } = useAuth();
   const location = useLocation();
 
-  return user ? <Navigate to={location.state?.from ?? "/"} /> : <Outlet />;
+  return user ? <Navigate to={location.state?.from ?? "/arena"} /> : <Outlet />;
 }

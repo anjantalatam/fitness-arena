@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Chip, Typography } from "@mui/material";
 import SpeedIcon from "@mui/icons-material/Speed";
 
-export default function ArenaTitle() {
+export default function ArenaTitle({ title, version }) {
   return (
     <Box my={3}>
       <Typography
@@ -16,24 +16,26 @@ export default function ArenaTitle() {
         }}
         p={2}
       >
-        Fitness Arena 🏋️‍♂️
+        {title} 🏋️‍♂️
       </Typography>
-      <Typography
-        variant="subtitle1"
-        align="center"
-        style={{
-          fontStyle: "italic",
-        }}
-        mt={1}
-      >
-        <Chip
-          label="alpha"
-          color="info"
-          // size="small"
-          icon={<SpeedIcon />}
-        />
-        &nbsp;version 1.1.0{" "}
-      </Typography>
+      {version && (
+        <Typography
+          variant="subtitle1"
+          align="center"
+          style={{
+            fontStyle: "italic",
+          }}
+          mt={1}
+        >
+          <Chip
+            label="alpha"
+            color="info"
+            // size="small"
+            icon={<SpeedIcon />}
+          />
+          &nbsp;version {version}
+        </Typography>
+      )}
     </Box>
   );
 }

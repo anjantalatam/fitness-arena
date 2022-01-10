@@ -12,6 +12,8 @@ import NotFound from "./NotFound";
 import PrivateRoute from "./PrivateRoute";
 import Arena from "./Arena";
 import ProtectedRoute from "./ProtectedRoute";
+import Team from "./Team";
+import Teams from "./Teams";
 
 function App() {
   // const { user } = useAuth();
@@ -29,8 +31,10 @@ function App() {
           </Route>
 
           <Route element={<ProtectedRoute />}>
-            <Route path="/support" exact element={<Support />} />
             <Route path="/arena" exact element={<Arena />} />
+            <Route path="/teams" exact element={<Teams />} />
+            <Route path="/team/:teamId" exact element={<Team />} />
+            <Route path="/support" exact element={<Support />} />
           </Route>
 
           <Route exact path="/" element={<Home />} />

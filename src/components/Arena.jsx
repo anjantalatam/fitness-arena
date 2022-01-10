@@ -114,24 +114,22 @@ export default function Arena() {
   };
 
   return (
-    <Box>
-      <Box
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        my={5}
-      >
-        <ArenaTitle />
-        <Calendar date={date} setDate={setDate} />
-        <WorkoutCard
-          datedData={datedData}
-          setDatedData={setDatedData}
-          enableServerButton={isDataChanged}
-          updateData={handleUpdateData}
-          defaultData={defaultData}
-        />
-      </Box>
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      my={5}
+    >
+      <ArenaTitle title={"Fitness Arena"} version={"1.4.2"} />
+      <Calendar date={date} setDate={setDate} />
+      <WorkoutCard
+        datedData={datedData}
+        setDatedData={setDatedData}
+        enableServerButton={isDataChanged}
+        updateData={handleUpdateData}
+        defaultData={defaultData}
+      />
     </Box>
   );
 }

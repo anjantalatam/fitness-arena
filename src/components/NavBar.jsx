@@ -10,6 +10,7 @@ import LiveHelpOutlinedIcon from "@mui/icons-material/LiveHelpOutlined";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LoginIcon from "@mui/icons-material/Login";
+import GroupsIcon from "@mui/icons-material/Groups";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 
 const useStyles = makeStyles((theme) => ({
@@ -82,6 +83,13 @@ function NavBar() {
               to="/arena"
               name="Arena"
               icon={<AccountCircleIcon className={classes.headerHelpIcon} />}
+            />
+          )}
+          {user && (
+            <NavLink
+              to="/teams"
+              name="Teams"
+              icon={<GroupsIcon className={classes.headerHelpIcon} />}
             />
           )}
 

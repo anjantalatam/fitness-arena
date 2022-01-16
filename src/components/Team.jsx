@@ -27,8 +27,6 @@ function Team() {
 
   const enqueueSnackbar = useSnackbar();
 
-  console.log({ defaultData });
-
   const { teamId } = useParams();
   const teamsDataCollectionRef = useMemo(
     () => collection(db, "teams", "teamsAutoId1", "teams-data"),
@@ -53,7 +51,7 @@ function Team() {
     const getDefaultData = async () => {
       const docData = await getDoc(teamDoc);
       const data = docData?.data();
-      setDefaultData(data.defaultData);
+      setDefaultData(data.teamData);
     };
 
     console.log("object");

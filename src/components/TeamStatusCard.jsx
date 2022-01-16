@@ -23,7 +23,7 @@ function TeamStatusCard({
   updateData,
   teamUniqueId = "",
 }) {
-  const cardData = data[type] || {};
+  const cardData = lodash.get(data, [type]) || {};
   const [collapse, setCollapse] = useState(false);
   // console.log(collapse);
 

@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import ArenaTitle from "./ArenaTitle";
 import Calendar from "./Calendar";
 import WorkoutCard from "./WorkoutCard";
-import lodash from "lodash";
+import lodash, { get, set } from "lodash";
 import moment from "moment";
 import { collection, doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase-config";
@@ -30,6 +30,15 @@ export default function Arena() {
   const gymCollectionRef = useMemo(
     () => collection(usersCollectionRef, uid, "gym"),
     [uid, usersCollectionRef]
+  );
+  const userDocRef = useMemo(
+    () => doc(usersCollectionRef, uid),
+    [uid, usersCollectionRef]
+  );
+  const teamsCollectionRef = useMemo(() => collection(db, "teams"), []);
+  const teamsDataCollectionRef = useMemo(
+    () => collection(teamsCollectionRef, "teamsAutoId1", "teams-data"),
+    [teamsCollectionRef]
   );
 
   useEffect(() => {
@@ -95,6 +104,26 @@ export default function Arena() {
   //   }
   // };
 
+  const updateTeamStats = async (teamId, status, selectedDate) => {
+    try {
+      const teamDocRef = doc(teamsDataCollectionRef, teamId);
+      const datedTeamDocRef = doc(teamDocRef, "team-dates", selectedDate);
+
+      const teamDocData = await getDoc(teamDocRef);
+      const datedTeamDocData = await getDoc(datedTeamDocRef);
+
+      const teamDocumentData = teamDocData.data();
+      const datedTeamDocumentData =
+        datedTeamDocData.data() || teamDocumentData.teamData;
+
+      set(datedTeamDocumentData, ["teamMembers", uid, "status"], status);
+
+      await setDoc(datedTeamDocRef, datedTeamDocumentData);
+    } catch (e) {
+      enqueueSnackbar(e);
+    }
+  };
+
   const handleUpdateData = async () => {
     try {
       const selectedDate = date.format("DD-MM-YYYY");
@@ -105,6 +134,22 @@ export default function Arena() {
       } else {
         await setDoc(datedDocRef, datedData);
       }
+
+      // console.log(datedData);
+
+      const userDocData = await getDoc(userDocRef);
+      const userTeamsList = get(userDocData.data(), "teams", []);
+
+      for (let i = 0; i < userTeamsList.length; i++) {
+        await updateTeamStats(
+          userTeamsList[i],
+          datedData.workedOut,
+          selectedDate
+        );
+      }
+
+      // const teams = get()
+
       // await updateStats(selectedDate);
       enqueueSnackbar("Data updated in Server", "success");
       setInitialData(datedData);

@@ -69,10 +69,8 @@ function Team() {
       const datedDoc = await getDoc(datedDocRef);
 
       if (datedDoc.exists()) {
-        console.log("exists");
         setDatedData(datedDoc.data());
         setInitialData(datedDoc.data());
-        console.log(datedDoc.data());
       } else {
         setDatedData(defaultData);
       }

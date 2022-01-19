@@ -60,8 +60,8 @@ function Teams() {
     [uid, usersCollectionRef]
   );
   const teamsDataCollectionRef = useMemo(
-    () => collection(db, "teams", "teamsAutoId1", "teams-data"),
-    []
+    () => collection(teamsCollectionRef, "teamsAutoId1", "teams-data"),
+    [teamsCollectionRef]
   );
 
   useEffect(() => {

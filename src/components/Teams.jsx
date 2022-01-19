@@ -17,7 +17,7 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import lodash, { cloneDeep, get } from "lodash";
+import lodash, { cloneDeep, get, startCase } from "lodash";
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { db } from "../firebase/firebase-config";
@@ -91,16 +91,64 @@ function Teams() {
     lodash.set(clonedDefaultTeamData, ["teamData", "teamMembers"], {
       [uid]: {
         status: false,
-        title: lodash.startCase(username),
+        title: startCase(username),
       },
     });
     lodash.set(clonedDefaultTeamData, "members", [
-      { uid: uid, username: username },
+      { uid: uid, username: startCase(username) },
     ]);
     lodash.set(clonedDefaultTeamData, "teamName", teamNameValue);
     lodash.set(clonedDefaultTeamData, "admins", [uid]);
 
     return clonedDefaultTeamData;
+  };
+
+  const joinATeam = async (teamUniqueId) => {
+    try {
+      const teamsDocRef = doc(teamsCollectionRef, "teamsAutoId1");
+      const teamsDocData = await getDoc(teamsDocRef);
+      const { teamIds } = teamsDocData.data();
+      if (get(teamIds, teamUniqueId)) {
+        const usersData = await getUserData(uid);
+        if (usersData.teams.length <= 2) {
+          // add to list of teams in users
+          usersData.teams.push(teamUniqueId);
+          console.log(usersData);
+          await setUsersData(uid, usersData);
+
+          // add to teamMembers list and members list of the team.
+          const teamDocRef = doc(teamsDataCollectionRef, teamUniqueId);
+          const teamDocData = await getDoc(teamDocRef);
+          const teamDocumentData = teamDocData.data();
+
+          if (
+            teamDocumentData.members.findIndex(
+              (member) => member.uid === uid
+            ) === -1
+          ) {
+            teamDocumentData.members.push({ uid, username });
+          }
+          lodash.set(teamDocumentData, ["teamData", "teamMembers", uid], {
+            status: false,
+            title: startCase(username),
+          });
+          await setDoc(teamDocRef, teamDocumentData);
+
+          enqueueSnackbar(
+            `Joined Team-${teamDocumentData.teamName}`,
+            "success"
+          );
+        } else {
+          enqueueSnackbar(
+            "Teams limit[3] exceeded. Leave from a team to join a new one."
+          );
+        }
+      } else {
+        enqueueSnackbar("Team Doesn't exist!!. ");
+      }
+    } catch (e) {
+      enqueueSnackbar(e);
+    }
   };
 
   const createNewTeam = async (teamName) => {
@@ -242,14 +290,14 @@ function Teams() {
           title="Join a Team"
           placeholder="Enter Unique Team Id"
           action="join"
-          // add join function here
+          actionFunction={joinATeam}
         />
 
         <TeamsActionCard
           title="Create a Team"
           placeholder="Enter your Team Name"
           action="create"
-          createNewTeam={createNewTeam}
+          actionFunction={createNewTeam}
         />
       </Box>
 

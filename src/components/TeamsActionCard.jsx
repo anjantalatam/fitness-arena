@@ -7,8 +7,7 @@ function TeamsActionCard({
   title,
   placeholder,
   action,
-  createNewTeam = noop,
-  joinTeam = noop,
+  actionFunction = noop,
 }) {
   const [text, setText] = useState("");
 
@@ -32,7 +31,7 @@ function TeamsActionCard({
           />
           <Button
             variant="contained"
-            onClick={action === "create" ? () => createNewTeam(text) : joinTeam}
+            onClick={() => actionFunction(text)}
             disabled={!text}
           >
             {action}

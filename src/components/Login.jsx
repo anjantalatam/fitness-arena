@@ -11,7 +11,7 @@ import { get, startCase } from "lodash";
 export default function Login() {
   const { loginWithGoogle, username } = useAuth();
   const enqueueMessage = useSnackbar();
-  console.log(username);
+  // console.log(username);
 
   const handleLogin = async () => {
     try {

@@ -121,7 +121,7 @@ export default function Arena() {
       alignItems="center"
       my={5}
     >
-      <ArenaTitle title={"Fitness Arena"} version={"1.4.4"} />
+      <ArenaTitle title={"Fitness Arena"} version={"1.5.3"} />
       <Calendar date={date} setDate={setDate} />
       <WorkoutCard
         datedData={datedData}

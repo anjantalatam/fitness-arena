@@ -54,7 +54,6 @@ function Team() {
       setDefaultData(data.teamData);
     };
 
-    console.log("object");
     getDefaultData();
     getTeamData();
   }, [teamDoc, date]);
@@ -75,7 +74,6 @@ function Team() {
         setInitialData(datedDoc.data());
         console.log(datedDoc.data());
       } else {
-        console.log("doesn't exists");
         setDatedData(defaultData);
       }
     };

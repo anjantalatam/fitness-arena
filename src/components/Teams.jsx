@@ -17,7 +17,7 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import lodash, { cloneDeep, get, startCase } from "lodash";
+import lodash, { cloneDeep, get, set, startCase } from "lodash";
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { db } from "../firebase/firebase-config";
@@ -41,6 +41,8 @@ import DeleteTeamDialog from "../components/DeleteTeamDialog";
 import LeaveTeamDialog from "../components/LeaveTeamDialog";
 
 const warning = red[700];
+
+const USER_TEAM_LIMIT = 3;
 
 function Teams() {
   const [teams, setTeams] = useState({});
@@ -110,10 +112,16 @@ function Teams() {
       const { teamIds } = teamsDocData.data();
       if (get(teamIds, teamUniqueId)) {
         const usersData = await getUserData(uid);
-        if (usersData.teams.length <= 2) {
+        const existingTeamList = get(usersData, "teams", []);
+        if (existingTeamList.length <= USER_TEAM_LIMIT - 1) {
           // add to list of teams in users
-          usersData.teams.push(teamUniqueId);
-          console.log(usersData);
+          console.log(existingTeamList);
+          if (existingTeamList.indexOf(teamUniqueId) !== -1) {
+            enqueueSnackbar("Joining team failed!");
+            return;
+          }
+          existingTeamList.push(teamUniqueId);
+          set(usersData, "teams", existingTeamList);
           await setUsersData(uid, usersData);
 
           // add to teamMembers list and members list of the team.
@@ -140,11 +148,11 @@ function Teams() {
           );
         } else {
           enqueueSnackbar(
-            "Teams limit[3] exceeded. Leave from a team to join a new one."
+            `Teams limit[${USER_TEAM_LIMIT}] exceeded. Leave from a team to join a new one.`
           );
         }
       } else {
-        enqueueSnackbar("Team Doesn't exist!!. ");
+        enqueueSnackbar("Team Doesn't exist!!.");
       }
     } catch (e) {
       enqueueSnackbar(e);
@@ -164,6 +172,13 @@ function Teams() {
       );
       const usersDocumentData = cloneDeep(usersDocData.data());
       let teams = get(usersDocumentData, "teams") || [];
+
+      if (teams.length >= USER_TEAM_LIMIT) {
+        enqueueSnackbar(
+          `Teams limit[${USER_TEAM_LIMIT}] exceeded. Leave from a team to create a new one.`
+        );
+        return;
+      }
 
       const newTeamDocRef = await addDoc(
         teamsDataCollectionRef,
@@ -302,7 +317,7 @@ function Teams() {
       </Box>
 
       <Paper style={{ margin: "2rem 0" }}>
-        <Box m={2}>
+        <Box m={2} maxWidth={"85vw"}>
           <Typography variant="h5">Your Teams</Typography>
 
           <TableContainer>

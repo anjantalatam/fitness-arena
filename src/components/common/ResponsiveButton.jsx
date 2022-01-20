@@ -24,7 +24,10 @@ function ResponsiveButton({
         >
           {button.title}
         </Button>
-        <IconButton sx={{ flexGrow: 1, display: { xs: "inline", sm: "none" } }}>
+        <IconButton
+          sx={{ flexGrow: 1, display: { xs: "inline", sm: "none" } }}
+          onClick={onClick}
+        >
           {iconButton.icon}
         </IconButton>
       </Box>

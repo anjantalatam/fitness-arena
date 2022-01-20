@@ -9,12 +9,7 @@ import { useEffect, useState } from "react";
 import { Chip } from "@mui/material";
 import { Box } from "@mui/system";
 
-export default function DialogPopup({
-  open,
-  setOpen,
-  teamName,
-  confirmActionFunction,
-}) {
+export default function DialogPopup({ open, setOpen, teamName, leaveTeam }) {
   const [text, setText] = useState("");
   const confirmText = `leave/team/${teamName}`;
 
@@ -67,7 +62,7 @@ export default function DialogPopup({
             Cancel
           </Button>
           <Button
-            onClick={confirmActionFunction}
+            onClick={leaveTeam}
             disabled={!(text === confirmText)}
             variant="contained"
           >

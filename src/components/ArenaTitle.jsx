@@ -28,7 +28,7 @@ export default function ArenaTitle({ title, version }) {
           mt={1}
         >
           <Chip
-            label="alpha"
+            label="beta"
             color="info"
             // size="small"
             icon={<SpeedIcon />}

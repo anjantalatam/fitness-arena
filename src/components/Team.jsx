@@ -122,8 +122,6 @@ function Team() {
         enableServerButton={isDataChanged}
         updateData={handleUpdateData}
       />
-
-      <Button onClick={() => copyToClipboard("Hi there ")}>Copy</Button>
     </Box>
   );
 }

@@ -37,6 +37,8 @@ export default function AuthContextProvider({ children }) {
     uid: user?.uid,
     // takecare when signin with email and password
     username: user?.displayName,
+    useremail: user?.email,
+    isEmailVerified: user?.emailVerified,
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

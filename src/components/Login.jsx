@@ -9,7 +9,7 @@ import useSnackbar from "../hooks/useSnackbar";
 import { get, startCase } from "lodash";
 
 export default function Login() {
-  const { loginWithGoogle, username } = useAuth();
+  const { loginWithGoogle } = useAuth();
   const enqueueMessage = useSnackbar();
   // console.log(username);
 
@@ -36,8 +36,7 @@ export default function Login() {
         justifyContent: "center",
         alignItems: "center",
         marginTop: "5rem",
-      }}
-    >
+      }}>
       <Card sx={{ maxWidth: 345 }}>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">

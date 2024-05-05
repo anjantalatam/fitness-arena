@@ -1,7 +1,7 @@
 import "../App.css";
 import NavBar from "./NavBar";
 import { Route, Routes, Navigate } from "react-router-dom";
-import { CssBaseline, Typography } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 
 import Support from "./Support";
 import Home from "./Home";

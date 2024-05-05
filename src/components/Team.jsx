@@ -8,9 +8,7 @@ import Calendar from "./Calendar";
 import moment from "moment";
 import lodash from "lodash";
 import TeamStatusCard from "./TeamStatusCard";
-import { Button } from "@mui/material";
 import useSnackbar from "../hooks/useSnackbar";
-import useCopyToClipboard from "../hooks/useCopyToClipboard";
 import CopyToClipboard from "./common/CopyToClipboard";
 
 const today = moment().format("DD-MM-YYYY");
@@ -22,8 +20,6 @@ function Team() {
   const [datedData, setDatedData] = useState({});
   const [initialData, setInitialData] = useState({});
   const [isDataChanged, setIsDataChanged] = useState(false);
-
-  const [, copyToClipboard] = useCopyToClipboard();
 
   const enqueueSnackbar = useSnackbar();
 
@@ -103,8 +99,7 @@ function Team() {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      my={5}
-    >
+      my={5}>
       <ArenaTitle title={teamData.teamName} />
       <CopyToClipboard value={teamId} mb={3} />
 
